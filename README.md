@@ -1,18 +1,12 @@
 # dotfiles
 
 ```bash
-bash -c "$(curl -LsS https://raw.github.com/rossmacarthur/dotfiles/master/bootstrap/bootstrap.sh)"
+bash -c "$(wget -qO - https://raw.github.com/akiarie/dotfiles/master/bootstrap/bootstrap.sh)"
 ```
 
-**or**
+<!--The bootstrap process in action:-->
 
-```bash
-bash -c "$(wget -qO - https://raw.github.com/rossmacarthur/dotfiles/master/bootstrap/bootstrap.sh)"
-```
-
-The bootstrap process in action:
-
-![setup process](https://user-images.githubusercontent.com/17109887/29859861-4be1e03a-8d64-11e7-88e4-72c0dce4609f.gif)
+<!--![setup process](https://user-images.githubusercontent.com/17109887/29859861-4be1e03a-8d64-11e7-88e4-72c0dce4609f.gif)-->
 
 ### Customization
 
@@ -26,4 +20,4 @@ The install script is designed to be very easy to create your own bootstrap. Sim
 
 ### Acknowledgements
 
-Inspired by [Cătălin Mariș's](https://github.com/alrra) [dotfiles](https://github.com/alrra/dotfiles).
+Started with [Ross MacArthur's dotfiles](https://github.com/rossmacarthur/dotfiles).
