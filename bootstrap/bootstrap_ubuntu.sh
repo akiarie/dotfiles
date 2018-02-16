@@ -23,6 +23,9 @@ clone_oh_my_zsh
 subheading "Base16 Shell Theme"
 clone_base16_shell_theme
 
+subheading "Making ssh dir"
+make_ssh_dir
+
 #subheading "Vim plugins"
 
 heading "Create symbolic links"
@@ -30,8 +33,9 @@ heading "Create symbolic links"
 subheading "Configurations"
 #symlink "git/gitconfig"               ".gitconfig"
 #symlink "git/gitconfig_global"        ".gitconfig_global"
-symlink "tmux/tmux_remote.conf"              ".tmux.conf"
-#symlink "vim/vimrc"                   ".vimrc"
+symlink "ssh/authorized_keys"         ".ssh/authorized_keys"
+symlink "tmux/tmux_remote.conf"       ".tmux.conf"
+symlink "vim/vimrc"                   ".vimrc"
 symlink "zsh/zshrc"                   ".zshrc"
 #symlink "zsh/aliases"                 ".aliases"
 #symlink "zsh/aliases_ubuntu"          ".aliases_os"
@@ -45,5 +49,3 @@ subheading "Scripts"
 
 
 heading "General\n"
-
-disable_guest_login
