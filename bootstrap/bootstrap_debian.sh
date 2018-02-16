@@ -27,7 +27,8 @@ clone_base16_shell_theme
 subheading "Making ssh dir"
 make_ssh_dir
 
-#subheading "Vim plugins"
+subheading "Vim plugins"
+install_vim_plugins
 
 heading "Create symbolic links"
 
@@ -35,6 +36,8 @@ subheading "Configurations"
 #symlink "git/gitconfig"               ".gitconfig"
 #symlink "git/gitconfig_global"        ".gitconfig_global"
 symlink "ssh/authorized_keys"         ".ssh/authorized_keys"
+symlink "vim/ftplugin"                ".vim/after/ftplugin"
+symlink "vim/pathogen.vim"            ".vim/autoload/pathogen.vim"
 symlink "tmux/tmux_remote.conf"       ".tmux.conf"
 symlink "vim/vimrc"                   ".vimrc"
 symlink "zsh/zshrc"                   ".zshrc"

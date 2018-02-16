@@ -1,72 +1,152 @@
-filetype plugin on       " Enable filetype detection
-filetype indent on       " Set indent for current filetype
-syntax enable            " Enable syntax highlighting
-let base16colorspace=256 " Access colors present in 256 colorspace
-set t_Co=256             " 256 color mode
-set background=dark      " Dark background
+"=============================================================
+"  Author: Amisi Kiarie                                      =
+"  File: .vimrc                                              =
+"=============================================================
 
-" Try set colorscheme based on current base16 shell theme
-if filereadable(expand("~/.vimrc_background"))
-  source ~/.vimrc_background
-endif
+" General Settings
+    " Pathogen
+        call pathogen#infect() 
+        call pathogen#helptags()
+        syntax on
+        filetype plugin indent on
 
-" Create undo directory if it doesn't exist
-silent !mkdir -p ~/.vim/vimundo > /dev/null 2>&1
+    " UI
+        let base16colorspace=256
+        colorscheme base16-default-dark
+        set background=dark
+        hi Normal ctermbg=none
+        highlight NonText ctermbg=none
 
-set nocompatible
-set autoread      " Auto read when a file is changed from the outside
-set number        " Show line numbers
-set ruler         " Show current position
-set nowrap        " Do not wrap lines
-set expandtab     " Use spaces instead of tabs
-set smarttab      " Tab are very smart
-set shiftwidth=2  " 1 tab == 2 spaces
-set tabstop=2     " 1 tab == 2 spaces
-set autoindent    " Auto indent
-set smartindent   " Indent are very smart
-set nobackup      " Do not make temporary backup of file
-set nowritebackup " Do not write temporary backup of file
-set noswapfile    " Do not make a swap file for the buffer
-set undofile      " Make undo's persist after exiting Vim
-set undodir=~/.vim/vimundo/    " Set undo directory
-set pastetoggle=<F2>           " Toggle for pasting
-set backspace=indent,eol,start " Allow backspacing over everything in insert mode
+    " Folding
+        set foldmethod=indent   
+        set foldnestmax=10
+        set foldlevel=7
+        set foldlevelstart=7
 
-" Remap direction keys for Colemak: 'h'=up, 'k'=down, 'l'=right, 'j'=left
-nnoremap j h
-nnoremap k j
-nnoremap h k
-vnoremap j h
-vnoremap k j
-vnoremap h k
+    " Syntastic
+        set statusline+=%#warningmsg#
+        set statusline+=%{SyntasticStatuslineFlag()}
+        set statusline+=%*
+        let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list = 1
+        let g:syntastic_check_on_wq = 0
+        let g:syntastic_cpp_compiler = 'g++'
+        let g:syntastic_cpp_compiler_options = ' -std=c++11'
+        let g:syntastic_auto_jump = 1
 
-" Delete trailing whitespace on save
-func! DeleteTrailingWhitespace()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite * :call DeleteTrailingWhitespace()
+    " Local vim
+        let g:localvimrc_ask = 0
 
-" Return to last edit position when opening files
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    " Highlight
+        set hlsearch
 
-" Plugins
-set runtimepath^=~/.vim/bundle/flake8   " Enable flake8
-set runtimepath^=~/.vim/bundle/nerdtree " Enable nerdtree
+    " Line numbers
+        set relativenumber
+        set number
+        highlight LineNr ctermbg=none
 
-" Flake8 settings
-let g:flake8_show_in_gutter = 1          " Show marks on the left
-let g:flake8_quickfix_location="topleft" " Show quickfix window at the top
-let g:flake8_error_marker='●'            " Set error marker
-let g:flake8_warning_marker='●'          " Set warning marker
-let g:flake8_pyflake_marker=''           " Disable PyFlakes warnings
-let g:flake8_complexity_marker=''        " Disable McCabe complexity warnings
-let g:flake8_naming_marker=''            " Disable naming warnings
-highlight link Flake8_Error   ErrorMsg
-highlight link Flake8_Warning WarningMsg
-autocmd BufWritePost *.py call Flake8()  " Call Flake8 when writing a Python file
+    " Indentation/tab settigs
+        set shiftwidth=4
+        set tabstop=4
+        set expandtab
+        set autoindent
+        set pastetoggle=<F2>
 
-" NERDTree settings
-map <C-n> :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$']
+    " CFMT
+        "let g:cfmt_style = '-linux -brf'
+        "autocmd BufWritePre *.c,*.h Cfmt
+
+    " Word docs
+    autocmd BufReadPre *.docx set ro
+    autocmd BufReadPost *.docx %!docx2txt.pl
+
+    " Typing settings
+        let loaded_delimitMate = 1
+        au FileType mail let b:loaded_delimitMate = 1
+
+    " Abbreviations
+        "abbreviate )( ()
+        "abbreviate ][ []
+        "abbreviate }{ {}
+        "abbrev texit textit
+
+
+    " Put plugins and dictionaries in this dir (also on Windows)
+        let vimDir = '$HOME/.vim'
+        let &runtimepath.=','.vimDir
+
+
+    " Keep undo history across sessions by storing it in a file
+        if has('persistent_undo')
+            let myUndoDir = expand(vimDir . '/undodir')
+            " Create dirs
+            call system('mkdir ' . vimDir)
+            call system('mkdir ' . myUndoDir)
+            let &undodir = myUndoDir
+            set undofile
+        endif
+
+" Functions
+    function! Cycle_numbering() abort
+      if exists('+relativenumber')
+        execute {
+              \ '00': 'set relativenumber   | set number',
+              \ '01': 'set norelativenumber | set number',
+              \ '10': 'set norelativenumber | set nonumber',
+              \ '11': 'set norelativenumber | set number' }[&number . &relativenumber]
+      else
+        " No relative numbering, just toggle numbers on and off.
+        set number!<CR>
+      endif
+    endfunction
+
+" Mappings
+    " Leaders
+        let mapleader = ' '
+        let maplocalleader = ','
+
+    " General commands
+        " Simplifying command key
+            nmap ; :
+            vmap ; :
+
+        " Cycling 
+            nnoremap <silent> <leader>r :call Cycle_numbering()<CR>
+
+        " Switching thorugh buffer
+            nmap { :up<CR>:bN<CR>
+            nmap } :up<CR>:bn<CR>
+
+            nnoremap <leader>[ {
+            nnoremap <leader>] }
+
+        " Navigating between splits
+            nnoremap <c-j> <c-w>j
+            nnoremap <c-k> <c-w>k
+            nnoremap <c-h> <c-w>h
+            nnoremap <c-l> <c-w>l
+
+        " Split lines
+            nnoremap K i<CR><Esc>
+
+        " Change escape in insert
+            inoremap jk <esc>
+
+        " Insert empty lines
+            nnoremap <leader>k O<esc>
+            nnoremap <leader>j o<esc>
+
+        " Toggles
+            nnoremap <leader>l :TagbarToggle<CR>
+            nnoremap <leader>e :NERDTreeToggle<CR>
+
+        " Prevent v-mode paste from over-writing
+            vnoremap p "_dP
+        "
+        " Remove highlighting
+            nmap <C-I> :nohlsearch <CR>
+            
+        " Checking
+             "autocmd filetype text call AutoCorrect()
+
+" Autocommands

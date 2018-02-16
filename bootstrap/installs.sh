@@ -141,61 +141,86 @@ clone_oh_my_zsh() {
     "${ZSH}"
 }
 
-
 clone_base16_shell_theme() {
   clone_git_repository "Base16 Shell" \
     "https://github.com/chriskempson/base16-shell" \
     "${HOME}/.config/base16-shell"
 }
 
-
-clone_vim_nerdtree_plugin() {
+install_vim_plugins() {
+  create_directory "$(dirname "${HOME}/.vim/autoload")"
+  clone_git_repository "autocorrect" \
+      "https://github.com/panozzaj/vim-autocorrect.git" \
+      "${HOME}/.vim/bundle/autocorrect.vim"
+  clone_git_repository "base16" \
+      "https://github.com/chriskempson/base16-vim.git" \
+      "${HOME}/.vim/bundle/base16-vim"
+  clone_git_repository "closetag" \
+      "https://github.com/alvan/vim-closetag.git" \
+      "${HOME}/.vim/bundle/closetag.vim"
+  clone_git_repository "command-t" \
+      "https://github.com/wincent/command-t.git" \
+      "${HOME}/.vim/bundle/command-t"
+  clone_git_repository "delimitMate" \
+      "https://github.com/Raimondi/delimitMate.git" \
+      "${HOME}/.vim/bundle/delimitMate"
+  clone_git_repository "ghcmod-vim" \
+      "https://github.com/eagletmt/ghcmod-vim.git" \
+      "${HOME}/.vim/bundle/ghcmod-vim"
+  clone_git_repository "julia-syntax.vim" \
+      "https://github.com/ajpaulson/julia-syntax.vim.git" \
+      "${HOME}/.vim/bundle/julia-syntax.vim"
+  clone_git_repository "julia-vim" \
+      "https://github.com/JuliaEditorSupport/julia-vim" \
+      "${HOME}/.vim/bundle/julia-vim"
+  clone_git_repository "loupe" \
+      "https://github.com/wincent/loupe.git" \
+      "${HOME}/.vim/bundle/loupe"
+  clone_git_repository "NERDCommenter" \
+      "https://github.com/scrooloose/nerdcommenter" \
+      "${HOME}/.vim/bundle/nerdcommenter"
   clone_git_repository "NERDTree" \
     "https://github.com/scrooloose/nerdtree.git" \
     "${HOME}/.vim/bundle/nerdtree"
-}
-
-
-clone_vim_flake8_plugin() {
-  clone_git_repository "Flake8" \
+  clone_git_repository "rust" \
+    "https://github.com/rust-lang/rust.vim.git" \
+    "${HOME}/.vim/bundle/rust.vim"
+  clone_git_repository "STL-Syntax" \
+    "https://github.com/vim-scripts/STL-Syntax.git" \
+    "${HOME}/.vim/bundle/STL-Syntax.vim"
+  clone_git_repository "supertab" \
+    "https://github.com/ervandew/supertab.git" \
+    "${HOME}/.vim/bundle/supertab"
+  clone_git_repository "Syntastic" \
+    "https://github.com/vim-syntastic/syntastic.git" \
+    "${HOME}/.vim/bundle/syntastic"
+  clone_git_repository "Tagbar" \
+    "https://github.com/majutsushi/tagbar.git" \
+    "${HOME}/.vim/bundle/tagbar"
+  clone_git_repository "vim-airline" \
+    "https://github.com/vim-airline/vim-airline.git" \
+    "${HOME}/.vim/bundle/vim-airline"
+  clone_git_repository "vim-cfmt" \
+    "https://github.com/crosbymichael/vim-cfmt.git" \
+    "${HOME}/.vim/bundle/vim-cfmt"
+  clone_git_repository "vim-flake8" \
     "https://github.com/nvie/vim-flake8.git" \
-    "${HOME}/.vim/bundle/flake8"
-}
-
-
-clone_vim_base16_themes() {
-  clone_git_repository "Base16" \
-    "https://github.com/chriskempson/base16-vim" \
-    "${HOME}/.vim/colors/base16"
-  execute "cp ${HOME}/.vim/colors/base16/colors/*.vim ${HOME}/.vim/colors/" "Copy Base16 color schemes to ~/.vim/colors/"
-}
-
-
-install_sublime_text_3() {
-  check_package_installed "Sublime Text 3" "sublime-text"
-  if [ $? -eq 0 ]; then
-    local build=$(curl -Ls https://www.sublimetext.com/3 | python -c "import re,sys;print re.search(r'(?<=The latest build is )(\d\d\d\d)',sys.stdin.read()).groups()[0]")
-    if [ ! -z "$build" ]; then
-      install_deb_package "Sublime Text 3" \
-        "https://download.sublimetext.com/sublime-text_build-${build}_amd64.deb"
-    else
-      print_error "Unable to check latest Sublime Text 3 build"
-    fi
-  fi
-}
-
-
-install_google_chrome() {
-  check_package_installed "Google Chrome" "google-chrome-stable"
-  [ $? -eq 0 ] && install_deb_package "Google Chrome" \
-    "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-}
-
-
-install_megasync_client() {
-  check_package_installed "MEGAsync Client" "megasync"
-  [ $? -eq 0 ] && install_deb_package "MEGAsync Client" \
-    "https://mega.nz/linux/MEGAsync/xUbuntu_16.04/amd64/megasync-xUbuntu_16.04_amd64.deb"
+    "${HOME}/.vim/bundle/vim-flake8"
+  clone_git_repository "vim-go" \
+    "https://github.com/fatih/vim-go.git" \
+    "${HOME}/.vim/bundle/vim-go"
+  clone_git_repository "vim-localvimrc" \
+    "https://github.com/embear/vim-localvimrc.git" \
+    "${HOME}/.vim/bundle/vim-localvimrc"
+  clone_git_repository "vimproc" \
+    "https://github.com/Shougo/vimproc.vim.git" \
+    "${HOME}/.vim/bundle/vimproc.vim"
+  clone_git_repository "vim-sensible" \
+    "https://github.com/tpope/vim-sensible.git" \
+    "${HOME}/.vim/bundle/vim-sensible"
+  clone_git_repository "vim-surround" \
+    "https://github.com/tpope/vim-surround.git" \
+    "${HOME}/.vim/bundle/vim-surround"
 }
 
 
@@ -203,13 +228,6 @@ make_ssh_dir() {
   create_directory "$(dirname "${HOME}/.ssh")"
 }
 
-
-install_homebrew() {
-  if ! command_exists brew; then
-    execute "echo | ruby -e '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)'" "Homebrew (install)"
-  fi
-  execute "brew update" "Homebrew (update)"
-}
 
 
 if [ "${PLATFORM}" == "macOS" ]; then
