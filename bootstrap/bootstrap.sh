@@ -54,10 +54,10 @@ main() {
   fi
 
   cd ${DOTFILES_DIRECTORY}/bootstrap
-  chmod +x ${DOTFILES_DIRECTORY}/bootstrap_*.sh
   local options=$(find . -type f -name "bootstrap_*.sh" | cut -d '_' -f 2- | cut -d '.' -f 1 | xargs -n20 | sort)
   prompt_for_choice $options "Please select a bootstrap type"
   [ $? -ne 0 ] && return 1
+  chmod +x bootstrap_$CHOICE.sh
   ./bootstrap_$CHOICE.sh
   heading "Complete!\n"
 }
