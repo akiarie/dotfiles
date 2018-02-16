@@ -12,6 +12,7 @@ install_package "tmux"       "tmux"
 install_package "Vim"        "vim"
 install_package "xclip"      "xclip"
 install_package "Zsh"        "zsh"
+change_shell    "zsh"
 
 install_pip2
 

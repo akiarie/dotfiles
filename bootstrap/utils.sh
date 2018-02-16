@@ -147,6 +147,10 @@ create_directory() {
   fi
 }
 
+change_shell() {
+    chsh -s $(which ${1})
+}
+
 
 remove_directory() {
   execute "rm -rf ${1}" "Remove directory ${1/#$HOME/~}"
