@@ -191,6 +191,7 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 alias sl="ls"
 
 export PATH=$PATH:$HOME/.bin
+export PATH=$PATH:$HOME/.local/bin
 
 fpath=(~/.completions $fpath)
 
