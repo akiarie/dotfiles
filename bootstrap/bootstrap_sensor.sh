@@ -40,16 +40,17 @@ symlink "vim/ftplugin"                ".vim/after/ftplugin"
 symlink "vim/pathogen.vim"            ".vim/autoload/pathogen.vim"
 symlink "tmux/tmux_remote.conf"       ".tmux.conf"
 symlink "vim/vimrc"                   ".vimrc"
-symlink "zsh/zshrc_debian"             ".zshrc"
+symlink "zsh/zshrc_sensor"            ".zshrc";
 symlink "zsh/dircolors"               ".dircolors"
 #symlink "zsh/aliases"                 ".aliases"
 #symlink "zsh/aliases_ubuntu"          ".aliases_os"
+#symlink "zsh/rossmacarthur.zsh-theme" ".oh-my-zsh/themes/rossmacarthur.zsh-theme"
 
 subheading "Scripts"
 #symlink "bin/capslock.py"             ".local/bin/capslock"
 #symlink "bin/femtocom.sh"             ".local/bin/femtocom"
 #symlink "zsh/completions/passthesalt" ".oh-my-zsh/completions/_passthesalt"
-#symlink "bin/ttyresize"               ".local/bin/ttyresize"
+symlink "bin/ttyresize.py"             ".local/bin/ttyresize"
 
 
 heading "General\n"

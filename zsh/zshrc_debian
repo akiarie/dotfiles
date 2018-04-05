@@ -92,21 +92,10 @@ function end() {
     kill -9 $(pgrep "$1")
 }
 
-# run show renaming script
-function rsow() {
-    cd /home/amisi/Videos/Shows
-    find -type f -regex '.*\(mp4\|mkv\|m4v\|avi\|flv\|divx\)' -execdir rename -v 's/\s+/./g;s/([a-zA-Z\.]*)-*\.*(\.?20[0-9][0-9]\.?)?([Ss]0)?([0-9])([Eex])?([0-9][0-9])(.*\.)(mp4|mkv|avi|m4v|flv|divx)/\L$1$4$6.$8\E/g;s/([a-zA-Z]*)\./\u$1./g;s/\.(For|And|Not|But|Or|Yet|So|If|The|It|To)\./.\l$1\./g' {} \;
-
-# removed 'Of' as conjunction for the sake of "The Night Of".
-}
-
-
-# these two `rc' functions simplify
-# editing *.rc files and vim ftplugins
 function rc() {
     vi ~/.$1rc
-    if [ $1 = "bash" ]; then
-        source "/home/amisi/.bashrc"
+    if [ $1 = "zsh" ]; then
+        source "~/.zshrc"
     fi
 }
 
@@ -130,22 +119,9 @@ function iv() {
     vim "$@"
 }
 
-function e() {
-    evince "$@" &!
-}
-
-function o() {
-    xdg-open "$@" &!
-}
-
 function x() {
     xclip -sel clip < "$@"
 }
-
-function latexguide() {
-    evince "/home/amisi/Books/CompSci/Tobias Oetiker - The Not So Short Introduction to LaTeX.pdf" &
-}
-
 
 
 # https://madebynathan.com/2011/10/04/a-nicer-way-to-use-xclip/
@@ -212,27 +188,60 @@ alias cbhs="cat $HISTFILE | tail -n 1 | cb"
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
-# mouse
-#synclient TapButton1=1 TapButton2=3 TapButton3=2
-
-alias localip="ipconfig getifaddr en0"
 alias sl="ls"
 
-# env vars
-export GOPATH=$HOME/gocode
-export PATH=$GOPATH/bin:$PATH
-export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/.bin
-
-# python paths
-export PATH=$PATH:/home/amisi/.local/bin
 
 fpath=(~/.completions $fpath)
 
-export PATH="$PATH:/usr/src/adb/platform-tools"
 eval "$(dircolors ~/.dircolors)";
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 autoload -Uz compinit
 compinit
 
 alias rcp="rsync -ah --progress"
+
+
+# run show renaming script
+function rsow() {
+    cd /home/amisi/Videos/Shows
+    find -type f -regex '.*\(mp4\|mkv\|m4v\|avi\|flv\|divx\)' -execdir rename -v 's/\s+/./g;s/([a-zA-Z\.]*)-*\.*(\.?20[0-9][0-9]\.?)?([Ss]0)?([0-9])([Eex])?([0-9][0-9])(.*\.)(mp4|mkv|avi|m4v|flv|divx)/\L$1$4$6.$8\E/g;s/([a-zA-Z]*)\./\u$1./g;s/\.(For|And|Not|But|Or|Yet|So|If|The|It|To)\./.\l$1\./g' {} \;
+
+
+# SSH login shortener
+function cn() {
+    stty -echo
+    command=$(grep $1 $HOME/.servers | awk -F: '{ print "ssh -t " $2 }')
+    expect -c "spawn $command;interact"
+    stty echo
+}
+
+function e() {
+    evince "$@" &!
+}
+
+function o() {
+    xdg-open "$@" &!
+}
+
+function latexguide() {
+    evince "/home/amisi/Books/CompSci/Tobias Oetiker - The Not So Short Introduction to LaTeX.pdf" &
+}
+
+# mouse
+synclient TapButton1=1 TapButton2=3 TapButton3=2
+
+alias sl="ls"
+
+# go env vars
+export GOPATH=$HOME/gocode
+export PATH=$GOPATH/bin:$PATH
+export PATH=$PATH:/usr/local/go/bin
+
+# python paths
+export PATH=$PATH:/home/amisi/.local/bin
+
+eval "$(dircolors ~/.dircolors)";
+zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+autoload -Uz compinit
+compinit
