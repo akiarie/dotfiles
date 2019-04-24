@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3
 # coding: utf-8
+import argparse
 import datetime
 import os
 import re
@@ -40,21 +41,21 @@ def date_time():
     date_icon = '📅'
     time_icon = find_time_icon(now)
 
-    return f'{date_icon} {date} {time_icon} {time}'
+    return f' {date_icon} {date} {time_icon} {time} '
 
 def volume():
     vol_left, vol_right = map(int, shell_cmd('mixer -S vol').split(':')[1:])
     vol = int((vol_left + vol_right)/2)
     vol_icon = ['🔇','🔈'][int(vol) > 0]
 
-    return f'{vol_icon} {vol}'
+    return f' {vol_icon} {vol} '
 
 def battery():
     bat = int(shell_cmd('apm -l'))
     charging = bool(int(shell_cmd('apm -a')))
     bat_icon = ['🔋', '🔌'][int(charging)]
 
-    return f'{bat_icon} {bat}'
+    return f' {bat_icon} {bat} '
 
 def light():
     def light_bar(light_amount):
@@ -80,6 +81,15 @@ def light():
 
     light_icon = '\N{high brightness symbol}'
 
-    return f'{light_icon} {light}'
+    return f' {light_icon} {light}'
 
-print(f' {light()}| {volume()} | {battery()} | {date_time()} ')
+parser = argparse.ArgumentParser()
+parser.add_argument("element", help="the status bar element to generate", default="all", type=str)
+args = parser.parse_args()
+
+if args.element == 'all':
+    print(f' {light()}| {volume()} | {battery()} | {date_time()} ')
+else:
+    print(eval(f'{args.element}()'))
+
+
